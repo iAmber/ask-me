@@ -97,7 +97,7 @@ html, body {
 
   background: url(../assets/img/wallpaper_askme_style01.png);
   background-position: left top;
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
   background-color: #313286;
 }
