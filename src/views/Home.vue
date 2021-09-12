@@ -12,7 +12,9 @@
       <div class="title">Just reply</div>
       <div class="desc">Maybe you’ll receive an unexpected surprise!y</div>
       <div class="typing-erea">
-        <div class="avatar"></div>
+        <div class="avatar">
+          <img :src=avatarUrl />
+        </div>
         <div class="name">{{nick}}</div>
         <div class="typing-desc">Ask me anything…</div>
         <div class="slide"/>
@@ -43,7 +45,7 @@ export default {
   },
   data() {
     return {
-      avatarUrl: '..',
+      avatarUrl: '',
       nick: 'Melissa Lime',
       answer: '',
       question_list: [{
@@ -79,6 +81,7 @@ export default {
     },
   },
   mounted() {
+    // TODO init avatarUrl & nick
     this.getAnsweredQuestionsOfQuestionBox();
   },
 };
@@ -164,13 +167,20 @@ html, body {
   left: 50%;
   transform: translateX(-50%);
 }
+
+.typing-erea .avatar img{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 0;
+}
 .typing-erea .name{
   font-family: Roboto-Bold;
   font-size: 16px;
   color: #000000;
   text-align: center;
   font-weight: 700;
-  padding-top: 50px;
+  padding-top: 58px;
   margin-bottom: 12px;
 }
 .typing-erea .typing-desc {
