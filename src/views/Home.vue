@@ -22,7 +22,7 @@
       </div>
       <div class="btn send-btn" @click="submitQuestion">SEND</div>
       <div class="opera-text">or</div>
-      <div class="btn make-btn">Make your own </div>
+      <a class="btn make-btn" :href="highlightUrl">Make your own </a>
       <div class="slide-area">Check other people’s reply and response</div>
       <div class="conversation-list">
         <div class="conversation-item" v-for="(item, index) in question_list" :key="index">
@@ -48,6 +48,7 @@ export default {
       avatarUrl: '',
       nick: 'Melissa Lime',
       answer: '',
+      highlightUrl: '',
       question_list: [{
         question: {
           questionBoxId: 1,
@@ -240,6 +241,7 @@ textarea.typing-text:-ms-input-placeholder {
   line-height: 82px;
 }
 /* btn */
+
 .container .btn {
   font-family: Roboto-Bold;
   font-size: 16px;
@@ -268,6 +270,8 @@ textarea.typing-text:-ms-input-placeholder {
   border-radius: 24px;
 }
 .container .make-btn {
+  display: block;
+  text-decoration: none;
   background: #5E60E3;
   box-shadow: 0 6px 25px 0 rgba(0,0,0,0.21);
   border-radius: 24px;
@@ -275,7 +279,7 @@ textarea.typing-text:-ms-input-placeholder {
 }
 .container .opera-text {
   font-family: Roboto-Bold;
-  font-size: 11px;
+  font-size: 12px;
   color: #FFFFFF;
   letter-spacing: 0;
   text-align: center;
