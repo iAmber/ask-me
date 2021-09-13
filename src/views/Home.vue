@@ -20,7 +20,9 @@
         <div class="slide"/>
         <textarea v-model="answer" class="typing-text" placeholder="type here…" maxlength="1000"/>
       </div>
-      <div class="btn send-btn" @click="submitQuestion">SEND</div>
+      <button class="btn send-btn" :class="{'disabled': isEmpty}"
+              :disabled="isEmpty" @click="submitQuestion"
+      >SEND</button>
       <div class="opera-text">or</div>
       <a class="btn make-btn" :href="highlightUrl">Make your own </a>
       <div class="slide-area">Check other people’s reply and response</div>
@@ -79,6 +81,11 @@ export default {
     getAnsweredQuestionsOfQuestionBox() {
       // TODO
       // this.question_list = data
+    },
+  },
+  computed: {
+    isEmpty() {
+      return !this.answer?.trim();
     },
   },
   mounted() {
@@ -243,6 +250,8 @@ textarea.typing-text:-ms-input-placeholder {
 /* btn */
 
 .container .btn {
+  display: block;
+  border: none;
   font-family: Roboto-Bold;
   font-size: 16px;
   color: #FFFFFF;
@@ -253,6 +262,7 @@ textarea.typing-text:-ms-input-placeholder {
   line-height: 48px;
   margin: 0 auto;
 }
+
 /* .container .btn:active {
   opacity: 0.85;
 } */
@@ -262,6 +272,9 @@ textarea.typing-text:-ms-input-placeholder {
 .container .make-btn:active {
   background-color: rgba(94, 96, 227, 0.85);
 }
+.container .btn.disabled {
+  background-color: #F0F0F0;
+}
 
 .container .send-btn {
   margin-top: 19px;
@@ -270,7 +283,6 @@ textarea.typing-text:-ms-input-placeholder {
   border-radius: 24px;
 }
 .container .make-btn {
-  display: block;
   text-decoration: none;
   background: #5E60E3;
   box-shadow: 0 6px 25px 0 rgba(0,0,0,0.21);
