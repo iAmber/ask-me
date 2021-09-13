@@ -68,6 +68,8 @@ export default {
   methods: {
     async submitQuestion() {
       this.submiting = true;
+      const sent = this.$t('sent');
+      const error = this.$t('error');
       try {
         const { data, status } = await axios.post(`${Conf.BASE_URL}/highlight.gateway.sendit.SendItService/SubmitQuestion`, {
           question: {
@@ -80,13 +82,13 @@ export default {
           },
         });
         if (status === 200 && data.question && data.question.questionId) {
-          Toast.success('Sent');
+          Toast.success(sent);
         } else {
-          Toast.fail('Oops...  something wrong, try again?');
+          Toast.fail(error);
         }
       } catch (e) {
         console.log(e);
-        Toast.fail('Oops...  something wrong, try again?');
+        Toast.fail(error);
       }
       this.submiting = false;
     },
