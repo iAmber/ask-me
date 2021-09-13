@@ -61,10 +61,11 @@ export default {
       },
       answer: '',
       submiting: false,
-      highlightUrl: 'https://play.google.com/store/apps/details?id=mobi.highlight.app',
+      highlightUrl: '',
       question_list: [],
     };
   },
+
   methods: {
     async submitQuestion() {
       this.submiting = true;
@@ -107,10 +108,7 @@ export default {
       }
     },
     changeLang() {
-      const curLan = window.navigator.language;
-      if (curLan === 'pt-BR') {
-        this.$i18n.locale = 'pt-BR';
-      }
+
     },
   },
   computed: {
