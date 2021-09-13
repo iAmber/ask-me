@@ -1,4 +1,11 @@
 # ask-me
+```
+发布准备
+```
+1. src/main.js   firebaseConfig 整个json配置为对应项目的firebaseConfig
+2. src/common/config 对应的远程域名base配置。
+3. 删除firebase 配置相关文件。
+4. firebase init 关联自身项目。
 
 ## Project setup
 ```
