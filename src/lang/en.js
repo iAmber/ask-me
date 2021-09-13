@@ -3,7 +3,7 @@ export default {
   desc: "Maybe you'll receive an unexpected surprise！",
   typingDesc: 'Ask me anything…',
   tapText: 'tap here…',
-  opera: 'or',
+  opera: 'Or',
   send: 'SEND',
   make: 'Make your own',
   slide: "Check other people's reply and response",

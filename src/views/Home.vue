@@ -151,7 +151,10 @@ export default {
       // this.question_list = data
     },
     changeLang() {
-
+      const curLan = window.navigator.language;
+      if (curLan === 'pt-BR') {
+        this.$i18n.locale = 'pt-BR';
+      }
     },
   },
   computed: {
