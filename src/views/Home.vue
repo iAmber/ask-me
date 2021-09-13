@@ -13,9 +13,9 @@
       <div class="desc">Maybe you’ll receive an unexpected surprise!y</div>
       <div class="typing-erea">
         <div class="avatar">
-          <img :src=avatarUrl />
+          <img :src="userInfo.avatarUrl"/>
         </div>
-        <div class="name">{{nick}}</div>
+        <div class="name">{{userInfo.nick}}</div>
         <div class="typing-desc">Ask me anything…</div>
         <div class="slide"/>
         <textarea v-model="answer" class="typing-text" placeholder="type here…" maxlength="1000"/>
@@ -25,7 +25,9 @@
       >SEND</button>
       <div class="opera-text">or</div>
       <a class="btn make-btn" :href="highlightUrl">Make your own </a>
-      <div class="slide-area">Check other people’s reply and response</div>
+      <div class="slide-area" v-if="question_list.length">
+        Check other people’s reply and response
+      </div>
       <div class="conversation-list">
         <div class="conversation-item" v-for="(item, index) in question_list" :key="index">
           <div class="question">
@@ -40,6 +42,10 @@
 
 <script>
 // @ is an alias to /src
+import Toast from 'vant/lib/toast';
+import 'vant/lib/toast/style';
+import axios from 'axios';
+import Conf from '../common/config';
 
 export default {
   name: 'Home',
@@ -47,50 +53,72 @@ export default {
   },
   data() {
     return {
-      avatarUrl: '',
-      nick: 'Melissa Lime',
+      userInfo: {
+        avatarUrl: '',
+        nick: '',
+        id: '',
+      },
       answer: '',
       highlightUrl: '',
-      question_list: [{
-        question: {
-          questionBoxId: 1,
-          questionId: 2,
-          content: {
-            textContent: {
-              message: 'Hmmmm, wondering are you single now?',
-            },
-          },
-        },
-        answer: {
-          questionBoxId: 1,
-          questionId: 2,
-          answerId: 1,
-          content: {
-            textContent: {
-              message: 'Hehe…That’s a secret!',
-            },
-          },
-        },
-      }],
+      question_list: [],
     };
   },
   methods: {
-    submitQuestion() {
-      // TODO this.answer
+    async submitQuestion() {
+      try {
+        const { data, status } = await axios.post(`${Conf.BASE_URL}/highlight.gateway.sendit.SendItService/SubmitQuestion`, {
+          question: {
+            content: {
+              text_content: {
+                message: this.answer,
+              },
+            },
+            question_box_id: this.questionId,
+          },
+        });
+        if (status === 200 && data.question && data.question.questionId) {
+          Toast.success('Sent');
+        } else {
+          Toast.fail('Oops...  something wrong, try again?');
+        }
+      } catch (e) {
+        console.log(e);
+        Toast.fail('Oops...  something wrong, try again?');
+      }
     },
-    getAnsweredQuestionsOfQuestionBox() {
-      // TODO
-      // this.question_list = data
+    async getAnsweredQuestionsOfQuestionBox(id) {
+      try {
+        const { data, status } = await axios.post(`${Conf.BASE_URL}/highlight.gateway.sendit.SendItService/GetAnsweredQuestionsOfQuestionBox`, {
+          question_box_id: id,
+        });
+        console.log(data, status);
+        const { answeredQuestions = [], questionBox = {} } = data;
+        this.userInfo = {
+          ...(questionBox.user || {}),
+        };
+        this.question_list = answeredQuestions;
+      } catch (e) {
+        console.log(e);
+        Toast.fail('Oops...  something wrong, try again?');
+      }
     },
   },
   computed: {
     isEmpty() {
       return !this.answer?.trim();
     },
+    questionId() {
+      const { id } = this.$route.query;
+      return id ? String(id) : '';
+    },
+    source() {
+      const { source } = this.$route.query;
+      return source || 'unknown';
+    },
   },
-  mounted() {
+  async mounted() {
     // TODO init avatarUrl & nick
-    this.getAnsweredQuestionsOfQuestionBox();
+    await this.getAnsweredQuestionsOfQuestionBox(this.questionId);
   },
 };
 </script>
@@ -133,6 +161,7 @@ html, body {
 }
 .container {
   width: 100%;
+  min-height: 100vh;
   padding: 31px 27px;
   color: #FFFFFF;
   text-align: left;
