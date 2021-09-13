@@ -26,9 +26,9 @@
       >{{ $t('send') }}</button>
       <div class="opera-text">{{ $t('opera') }}</div>
       <div class="sticky-area">
-        <a class="btn make-btn" :href="highlightUrl">{{ $t('make') }}</a>
-        <div class="slide-area">{{ $t('slide') }}</div>
+        <span class="btn make-btn"  @click="toAppStore">{{ $t('make') }}</span>
       </div>
+      <div class="slide-area">{{ $t('slide') }}</div>
       <div class="conversation-list">
         <div class="conversation-item" v-for="(item, index) in question_list" :key="index">
           <div class="question">
@@ -46,6 +46,7 @@
 import Toast from 'vant/lib/toast';
 import 'vant/lib/toast/style';
 import axios from 'axios';
+import { logEvent } from 'firebase/analytics';
 import Conf from '../common/config';
 
 export default {
@@ -61,7 +62,7 @@ export default {
       },
       answer: '',
       submiting: false,
-      highlightUrl: '',
+      highlightUrl: 'https://play.google.com/store/apps/details?id=mobi.highlight.app',
       question_list: [],
     };
   },
@@ -71,6 +72,7 @@ export default {
       this.submiting = true;
       const sent = this.$t('sent');
       const error = this.$t('error');
+      let resultStatus = 'fail';
       try {
         const { data, status } = await axios.post(`${Conf.BASE_URL}/highlight.gateway.sendit.SendItService/SubmitQuestion`, {
           question: {
@@ -84,6 +86,7 @@ export default {
         });
         if (status === 200 && data.question && data.question.questionId) {
           Toast.success(sent);
+          resultStatus = 'success';
         } else {
           Toast.fail(error);
         }
@@ -91,7 +94,19 @@ export default {
         console.log(e);
         Toast.fail(error);
       }
+      logEvent(this.analytics, 'ask_me_send', {
+        source: this.source,
+        status: resultStatus,
+      });
       this.submiting = false;
+    },
+    toAppStore() {
+      logEvent(this.analytics, 'ask_me_make_own', {
+        source: this.source,
+      });
+      setTimeout(() => {
+        window.location.href = this.highlightUrl;
+      }, 100);
     },
     async getAnsweredQuestionsOfQuestionBox(id) {
       try {
@@ -127,6 +142,9 @@ export default {
     },
   },
   async mounted() {
+    logEvent(this.analytics, 'ask_me_page', {
+      source: this.source,
+    });
     this.changeLang();
     // TODO init avatarUrl & nick
     await this.getAnsweredQuestionsOfQuestionBox(this.questionId);
