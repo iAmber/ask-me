@@ -9,24 +9,25 @@
       <img src="../assets/img/ic_actionbar_menu.png"/>
     </div> -->
     <div class="container">
-      <div class="title">Just reply</div>
-      <div class="desc">Maybe you’ll receive an unexpected surprise!y</div>
+      <div class="title">{{ $t('title') }}</div>
+      <div class="desc">{{ $t('desc') }}</div>
       <div class="typing-erea">
         <div class="avatar">
           <img :src="userInfo.avatarUrl"/>
         </div>
         <div class="name">{{userInfo.nick}}</div>
-        <div class="typing-desc">Ask me anything…</div>
+        <div class="typing-desc">{{ $t('typingDesc') }}</div>
         <div class="slide"/>
-        <textarea v-model="answer" class="typing-text" placeholder="type here…" maxlength="1000"/>
+        <textarea v-model="answer"
+          class="typing-text" :placeholder="$t('tapText')" maxlength="1000"/>
       </div>
-      <button class="btn send-btn" :class="{'disabled': isEmpty}"
-              :disabled="isEmpty" @click="submitQuestion"
-      >SEND</button>
-      <div class="opera-text">or</div>
-      <a class="btn make-btn" :href="highlightUrl">Make your own </a>
-      <div class="slide-area" v-if="question_list.length">
-        Check other people’s reply and response
+      <button class="btn send-btn" :class="{'disabled': isDisabled}"
+              :disabled="isDisabled" @click="submitQuestion"
+      >{{ $t('send') }}</button>
+      <div class="opera-text">{{ $t('opera') }}</div>
+      <div class="sticky-area">
+        <a class="btn make-btn" :href="highlightUrl">{{ $t('make') }}</a>
+        <div class="slide-area">{{ $t('slide') }}</div>
       </div>
       <div class="conversation-list">
         <div class="conversation-item" v-for="(item, index) in question_list" :key="index">
@@ -59,12 +60,14 @@ export default {
         id: '',
       },
       answer: '',
+      submiting: false,
       highlightUrl: '',
       question_list: [],
     };
   },
   methods: {
     async submitQuestion() {
+      this.submiting = true;
       try {
         const { data, status } = await axios.post(`${Conf.BASE_URL}/highlight.gateway.sendit.SendItService/SubmitQuestion`, {
           question: {
@@ -85,6 +88,7 @@ export default {
         console.log(e);
         Toast.fail('Oops...  something wrong, try again?');
       }
+      this.submiting = false;
     },
     async getAnsweredQuestionsOfQuestionBox(id) {
       try {
@@ -102,10 +106,13 @@ export default {
         Toast.fail('Oops...  something wrong, try again?');
       }
     },
+    changeLang() {
+
+    },
   },
   computed: {
-    isEmpty() {
-      return !this.answer?.trim();
+    isDisabled() {
+      return !this.answer?.trim() || this.submiting;
     },
     questionId() {
       const { id } = this.$route.query;
@@ -117,6 +124,7 @@ export default {
     },
   },
   async mounted() {
+    this.changeLang();
     // TODO init avatarUrl & nick
     await this.getAnsweredQuestionsOfQuestionBox(this.questionId);
   },
@@ -303,6 +311,8 @@ textarea.typing-text:-ms-input-placeholder {
 }
 .container .btn.disabled {
   background-color: #F0F0F0;
+  /* opacity: 0.5; */
+  cursor: not-allowed;
 }
 
 .container .send-btn {
@@ -328,6 +338,14 @@ textarea.typing-text:-ms-input-placeholder {
   margin: 3px auto 6px;
   height: 23px;
   line-height: 23px;
+}
+
+/* sticky-area */
+.sticky-area {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 23px;
+  width: 100%;
 }
 .container .slide-area {
   display: flex;
