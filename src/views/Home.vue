@@ -61,7 +61,7 @@ export default {
       },
       answer: '',
       submiting: false,
-      highlightUrl: '',
+      highlightUrl: 'https://play.google.com/store/apps/details?id=mobi.highlight.app',
       question_list: [],
     };
   },
