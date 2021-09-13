@@ -9,24 +9,25 @@
       <img src="../assets/img/ic_actionbar_menu.png"/>
     </div> -->
     <div class="container">
-      <div class="title">Just reply</div>
-      <div class="desc">Maybe you’ll receive an unexpected surprise!y</div>
+      <div class="title">{{ $t('title') }}</div>
+      <div class="desc">{{ $t('desc') }}</div>
       <div class="typing-erea">
         <div class="avatar">
           <img :src=avatarUrl />
         </div>
         <div class="name">{{nick}}</div>
-        <div class="typing-desc">Ask me anything…</div>
+        <div class="typing-desc">{{ $t('typingDesc') }}</div>
         <div class="slide"/>
-        <textarea v-model="answer" class="typing-text" placeholder="type here…" maxlength="1000"/>
+        <textarea v-model="answer"
+          class="typing-text" :placeholder="$t('tapText')" maxlength="1000"/>
       </div>
-      <button class="btn send-btn" :class="{'disabled': isEmpty}"
-              :disabled="isEmpty" @click="submitQuestion"
-      >SEND</button>
-      <div class="opera-text">or</div>
+      <button class="btn send-btn" :class="{'disabled': isDisabled}"
+              :disabled="isDisabled" @click="submitQuestion"
+      >{{ $t('send') }}</button>
+      <div class="opera-text">{{ $t('opera') }}</div>
       <div class="sticky-area">
-        <a class="btn make-btn" :href="highlightUrl">Make your own </a>
-        <div class="slide-area">Check other people’s reply and response</div>
+        <a class="btn make-btn" :href="highlightUrl">{{ $t('make') }}</a>
+        <div class="slide-area">{{ $t('slide') }}</div>
       </div>
       <div class="conversation-list">
         <div class="conversation-item" v-for="(item, index) in question_list" :key="index">
@@ -49,6 +50,7 @@ export default {
   },
   data() {
     return {
+      submiting: false,
       avatarUrl: '',
       nick: 'Melissa Lime',
       answer: '',
@@ -139,18 +141,26 @@ export default {
   methods: {
     submitQuestion() {
       // TODO this.answer
+      this.submiting = true;
+      setTimeout(() => {
+        this.submiting = false;
+      }, 1000);
     },
     getAnsweredQuestionsOfQuestionBox() {
       // TODO
       // this.question_list = data
     },
+    changeLang() {
+
+    },
   },
   computed: {
-    isEmpty() {
-      return !this.answer?.trim();
+    isDisabled() {
+      return !this.answer?.trim() || this.submiting;
     },
   },
   mounted() {
+    this.changeLang();
     // TODO init avatarUrl & nick
     this.getAnsweredQuestionsOfQuestionBox();
   },
@@ -336,6 +346,8 @@ textarea.typing-text:-ms-input-placeholder {
 }
 .container .btn.disabled {
   background-color: #F0F0F0;
+  /* opacity: 0.5; */
+  cursor: not-allowed;
 }
 
 .container .send-btn {
