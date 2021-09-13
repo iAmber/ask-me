@@ -24,8 +24,10 @@
               :disabled="isEmpty" @click="submitQuestion"
       >SEND</button>
       <div class="opera-text">or</div>
-      <a class="btn make-btn" :href="highlightUrl">Make your own </a>
-      <div class="slide-area">Check other people’s reply and response</div>
+      <div class="sticky-area">
+        <a class="btn make-btn" :href="highlightUrl">Make your own </a>
+        <div class="slide-area">Check other people’s reply and response</div>
+      </div>
       <div class="conversation-list">
         <div class="conversation-item" v-for="(item, index) in question_list" :key="index">
           <div class="question">
@@ -52,6 +54,66 @@ export default {
       answer: '',
       highlightUrl: '',
       question_list: [{
+        question: {
+          questionBoxId: 1,
+          questionId: 2,
+          content: {
+            textContent: {
+              message: 'Hmmmm, wondering are you single now?',
+            },
+          },
+        },
+        answer: {
+          questionBoxId: 1,
+          questionId: 2,
+          answerId: 1,
+          content: {
+            textContent: {
+              message: 'Hehe…That’s a secret!',
+            },
+          },
+        },
+      }, {
+        question: {
+          questionBoxId: 1,
+          questionId: 2,
+          content: {
+            textContent: {
+              message: 'Hmmmm, wondering are you single now?',
+            },
+          },
+        },
+        answer: {
+          questionBoxId: 1,
+          questionId: 2,
+          answerId: 1,
+          content: {
+            textContent: {
+              message: 'Hehe…That’s a secret!',
+            },
+          },
+        },
+      }, {
+        question: {
+          questionBoxId: 1,
+          questionId: 2,
+          content: {
+            textContent: {
+              message: 'Hmmmm, wondering are you single now?',
+            },
+          },
+        },
+        answer: {
+          questionBoxId: 1,
+          questionId: 2,
+          answerId: 1,
+          content: {
+            textContent: {
+              message: 'Hehe…That’s a secret!',
+            },
+          },
+        },
+      }, {
         question: {
           questionBoxId: 1,
           questionId: 2,
@@ -299,6 +361,14 @@ textarea.typing-text:-ms-input-placeholder {
   margin: 3px auto 6px;
   height: 23px;
   line-height: 23px;
+}
+
+/* sticky-area */
+.sticky-area {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 23px;
+  width: 100%;
 }
 .container .slide-area {
   display: flex;
