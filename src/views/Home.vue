@@ -107,7 +107,10 @@ export default {
       }
     },
     changeLang() {
-
+      const curLan = window.navigator.language;
+      if (curLan === 'pt-BR') {
+        this.$i18n.locale = 'pt-BR';
+      }
     },
   },
   computed: {
