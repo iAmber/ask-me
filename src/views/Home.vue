@@ -97,12 +97,14 @@ export default {
       logEvent(this.analytics, 'ask_me_send', {
         source: this.source,
         status: resultStatus,
+        type: 'click',
       });
       this.submiting = false;
     },
     toAppStore() {
       logEvent(this.analytics, 'ask_me_make_own', {
         source: this.source,
+        type: 'click',
       });
       setTimeout(() => {
         window.location.href = this.highlightUrl;
@@ -144,6 +146,7 @@ export default {
   async mounted() {
     logEvent(this.analytics, 'ask_me_page', {
       source: this.source,
+      type: 'click',
     });
     this.changeLang();
     // TODO init avatarUrl & nick

@@ -26,11 +26,15 @@ Vue.prototype.analytics = analytics;
 Vue.use(VueI18n);
 Vue.config.productionTip = false;
 
+const availableLang = ['pt-BR', 'en-US', 'pt'];
+const lang = navigator.language;
+
 const i18n = new VueI18n({
-  locale: 'en-US', // 设置语言环境
+  locale: availableLang.indexOf(lang) !== -1 ? lang : 'en-US', // 设置语言环境
   messages: {
     'en-US': en,
     'pt-BR': pt,
+    pt,
   },
 });
 
