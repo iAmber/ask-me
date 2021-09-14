@@ -49,6 +49,9 @@ import axios from 'axios';
 import { logEvent } from 'firebase/analytics';
 import Conf from '../common/config';
 
+const sentText = this.$t('sent');
+const errorText = this.$t('error');
+
 export default {
   name: 'Home',
   components: {
@@ -70,8 +73,6 @@ export default {
   methods: {
     async submitQuestion() {
       this.submiting = true;
-      const sent = this.$t('sent');
-      const error = this.$t('error');
       let resultStatus = 'fail';
       try {
         const { data, status } = await axios.post(`${Conf.BASE_URL}/highlight.gateway.sendit.SendItService/SubmitQuestion`, {
@@ -85,14 +86,14 @@ export default {
           },
         });
         if (status === 200 && data.question && data.question.questionId) {
-          Toast.success(sent);
+          Toast.success(sentText);
           resultStatus = 'success';
         } else {
-          Toast.fail(error);
+          Toast.fail(errorText);
         }
       } catch (e) {
         console.log(e);
-        Toast.fail(error);
+        Toast.fail(errorText);
       }
       logEvent(this.analytics, 'ask_me_send', {
         source: this.source,
@@ -123,11 +124,8 @@ export default {
         this.question_list = answeredQuestions;
       } catch (e) {
         console.log(e);
-        Toast.fail('Oops...  something wrong, try again?');
+        Toast.fail(errorText);
       }
-    },
-    changeLang() {
-
     },
   },
   computed: {
@@ -148,8 +146,6 @@ export default {
       source: this.source,
       type: 'click',
     });
-    this.changeLang();
-    // TODO init avatarUrl & nick
     await this.getAnsweredQuestionsOfQuestionBox(this.questionId);
   },
 };
