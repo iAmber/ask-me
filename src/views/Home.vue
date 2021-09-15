@@ -34,7 +34,9 @@
           <div class="question">
             <div class="text">{{ item.question.content.textContent.message }}</div>
           </div>
-          <div class="answer">{{ item.answer.content.textContent.message }}</div>
+          <div class="answer">
+            <div class="text">{{ item.answer.content.textContent.message }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -86,6 +88,7 @@ export default {
         });
         if (status === 200 && data.question && data.question.questionId) {
           Toast.success(sentText);
+          this.answer = '';
           resultStatus = 'success';
         } else {
           Toast.fail(errorText);
@@ -401,7 +404,7 @@ textarea.typing-text:-ms-input-placeholder {
   box-shadow: 0 4px 10px 0 rgba(0,0,0,0.25);
 }
 .conversation-item .question, .conversation-item .answer {
-  height: 64px;
+  min-height: 64px;
   box-sizing: content-box;
   font-family: Rubik-Medium;
   font-size: 15px;
@@ -412,27 +415,52 @@ textarea.typing-text:-ms-input-placeholder {
   background-repeat: no-repeat;
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 0 18px 12px ;
 }
+
 .conversation-item .text {
+  justify-content: center;
   display: flex;
   align-items: center;
   overflow-wrap: anywhere;
-  height: 64px;
-  overflow-y: hidden;
-  text-overflow: ellipsis;
+  min-height: 64px;
+  background: #f0f0f0;
+  padding: 19.06px 15px;
+  width: 100%;
+  border-radius: 14px;
+  position: relative;
 }
-.conversation-item .question {
-  background-image: url(../assets/img/chatbox_l.png);
-  color: #000000;
-  margin: 0 18px 11.61px 9.45px;
-  padding: 19.06px 15px 19.06px 23.55px;
 
+.conversation-item .text::before{
+  position: absolute;
+  top: 20px;
+  left: -10px;
+  width: 0;
+  height: 0;
+  content: ' ';
+  display: block;
+  border-top: 8px solid transparent;
+  border-right: 10px solid #f0f0f0;
+  border-bottom: 8px solid transparent;
+}
+
+.conversation-item .answer .text::before{
+  left: auto;
+  right: -10px;
+  border-left: 10px solid #5d63db;
+  border-right: 0;
+}
+
+.conversation-item .answer .text {
+  background: #5d63db;
+  text-align: right;
+}
+
+.conversation-item .question {
+  color: #000000;
+  /*padding: 19.06px 15px 19.06px 23.55px;*/
 }
 .conversation-item .answer {
-  background-image: url(../assets/img/chatbox_r.png);
   color: #FFFFFF;
-  margin: 0 9.45px 0 18px;
-  padding: 19.06px 23.55px 19.06px 15px;
 }
 </style>
