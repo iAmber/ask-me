@@ -49,9 +49,6 @@ import axios from 'axios';
 import { logEvent } from 'firebase/analytics';
 import Conf from '../common/config';
 
-const sentText = this.$t('sent');
-const errorText = this.$t('error');
-
 export default {
   name: 'Home',
   components: {
@@ -72,6 +69,8 @@ export default {
 
   methods: {
     async submitQuestion() {
+      const sentText = this.$t('sent');
+      const errorText = this.$t('error');
       this.submiting = true;
       let resultStatus = 'fail';
       try {
@@ -112,6 +111,7 @@ export default {
       }, 100);
     },
     async getAnsweredQuestionsOfQuestionBox(id) {
+      const errorText = this.$t('error');
       try {
         const { data, status } = await axios.post(`${Conf.BASE_URL}/highlight.gateway.sendit.SendItService/GetAnsweredQuestionsOfQuestionBox`, {
           question_box_id: id,
