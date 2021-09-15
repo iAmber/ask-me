@@ -369,6 +369,7 @@ textarea.typing-text:-ms-input-placeholder {
   position: -webkit-sticky;
   top: 23px;
   width: 100%;
+  z-index: 10;
 }
 .container .slide-area {
   display: flex;
